@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f5f7" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/img/icon.svg" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="ANIMA" />
+  <title>Planes — ANIMA TSC · Alma · Clan · Santuario</title>
+  <meta name="description" content="Las tres formas de habitar ANIMA: Alma (individual), Clan (2–8 Almas) y Santuario (organización). Elige tu umbral." />
+  <link rel="stylesheet" href="assets/css/anima.css" />
+  <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
+  <style>
+    .wrap{max-width:1140px;margin:0 auto;padding:22px 22px 90px}
+    .nav{position:sticky;top:14px;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;
+      padding:12px 18px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.68);
+      backdrop-filter:blur(22px);box-shadow:0 16px 50px rgba(0,0,0,.06)}
+    .nav-links{display:flex;align-items:center;gap:10px}
+
+    .head{text-align:center;padding:54px 0 18px;max-width:760px;margin:0 auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:850;letter-spacing:.42em;
+      text-transform:uppercase;color:#7b5920;padding:8px 16px;border-radius:999px;border:1px solid rgba(208,170,99,.32);
+      background:rgba(208,170,99,.10);margin-bottom:16px}
+    .head h1{font-size:clamp(42px,8vw,86px);line-height:.92;letter-spacing:-.07em;margin:0}
+    .head p{color:var(--muted);font-size:18px;margin:18px auto 0;max-width:600px}
+
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:30px}
+    .s4{grid-column:span 4}.s12{grid-column:span 12}
+
+    .plan{display:flex;flex-direction:column;scroll-margin-top:96px;position:relative;transition:.25s ease}
+    .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+    .plan.featured{border-color:rgba(208,170,99,.45);box-shadow:0 28px 90px rgba(208,170,99,.16)}
+    .plan .lvl{font-size:40px;line-height:1}
+    .plan h2{font-size:30px;letter-spacing:-.04em;margin:10px 0 2px}
+    .plan .who{color:var(--muted);font-size:13.5px;min-height:34px}
+    .plan .feat{list-style:none;padding:0;margin:16px 0;line-height:1.5;flex:1}
+    .plan .feat li{display:flex;gap:9px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+    .plan .feat li:first-child{border-top:0}
+    .plan .feat .ck{color:var(--gold);font-weight:900;flex:0 0 auto}
+    .ribbon{position:absolute;top:18px;right:18px}
+
+    .compare{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+    .compare th,.compare td{padding:13px 14px;text-align:left;border-bottom:1px solid var(--line)}
+    .compare th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+    .compare td.c{text-align:center}
+    .compare tr td:first-child{font-weight:700}
+    .yes{color:var(--ok);font-weight:800}.no{color:var(--soft)}
+
+    .footer{text-align:center;color:var(--muted);border-top:1px solid var(--line);padding:40px;margin-top:64px}
+    @media(max-width:880px){.s4{grid-column:span 12}.nav-links a.lk{display:none}.compare{display:block;overflow-x:auto}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav class="nav">
+      <a class="brand" href="index.html" style="text-decoration:none"><span class="mark"><svg viewBox="0 0 100 100" fill="none"><path d="M30 74 L49 31" stroke="#111" stroke-width="5.5" stroke-linecap="round"/><path d="M51 31 L70 74" stroke="#111" stroke-width="5.5" stroke-linecap="round"/><circle cx="50" cy="61" r="2.6" fill="#f2c64e"/></svg></span>ANIMA TSC</a>
+      <div class="nav-links">
+        <a class="lk btn ghost sm" href="index.html">Inicio</a>
+        <a class="lk btn secondary sm" href="roadmap.html">Roadmap V6</a>
+        <a class="btn sm" href="studio.html">Cruzar el umbral →</a>
+      </div>
+    </nav>
+
+    <header class="head">
+      <span class="eyebrow">Los Planes</span>
+      <h1>Elige tu umbral</h1>
+      <p>ANIMA crece contigo: empieza como una <b>Alma</b>, reúnete en un <b>Clan</b> o levanta un <b>Santuario</b> completo. Tu identidad y tu privacidad viajan contigo en cada nivel.</p>
+    </header>
+
+    <!-- Planes -->
+    <div class="grid">
+      <!-- ALMA -->
+      <div class="card s4 plan" id="alma">
+        <span class="lvl">◆</span>
+        <span class="pill" style="margin-top:10px;width:max-content">Nivel 1</span>
+        <h2>Alma</h2>
+        <p class="who">Para el creador individual: artistas, muralistas, tatuadores, músicos, diseñadores.</p>
+        <ul class="feat">
+          <li><span class="ck">✦</span> Perfil e identidad creativa editable</li>
+          <li><span class="ck">✦</span> Trayectoria, portafolio y memorias</li>
+          <li><span class="ck">✦</span> Proyectos (flujo de trabajo) y agenda</li>
+          <li><span class="ck">✦</span> Finanzas privadas y biblioteca</li>
+          <li><span class="ck">✦</span> Cotizador profesional con PDF</li>
+          <li><span class="ck">✦</span> LUMBRE (modo local) y camino por niveles</li>
+        </ul>
+        <a class="btn" href="studio.html">Crear mi Alma →</a>
+      </div>
+
+      <!-- CLAN -->
+      <div class="card s4 plan featured" id="clan">
+        <span class="ribbon pill gold">Más elegido</span>
+        <span class="lvl">❂</span>
+        <span class="pill" style="margin-top:10px;width:max-content">Nivel 2</span>
+        <h2>Clan</h2>
+        <p class="who">Para estudios y colectivos: de 2 a 8 Almas que crean juntas.</p>
+        <ul class="feat">
+          <li><span class="ck">✦</span> Todo lo del plan Alma, para cada miembro</li>
+          <li><span class="ck">✦</span> Comunidad privada por invitación</li>
+          <li><span class="ck">✦</span> Agenda, clientes y turnos compartidos</li>
+          <li><span class="ck">✦</span> Finanzas del Clan y memoria colectiva</li>
+          <li><span class="ck">✦</span> Muro y constelación del Clan</li>
+          <li><span class="ck">✦</span> Cada Alma conserva su espacio privado</li>
+        </ul>
+        <a class="btn gold" href="studio.html">Solicitar un Clan →</a>
+      </div>
+
+      <!-- SANTUARIO -->
+      <div class="card s4 plan" id="santuario">
+        <span class="lvl">🜁</span>
+        <span class="pill" style="margin-top:10px;width:max-content">Nivel 3</span>
+        <h2>Santuario</h2>
+        <p class="who">Para organizaciones y comunidades: más de 8 Almas y varios Clanes.</p>
+        <ul class="feat">
+          <li><span class="ck">✦</span> Todo lo del plan Clan, a gran escala</li>
+          <li><span class="ck">✦</span> Múltiples Clanes y departamentos</li>
+          <li><span class="ck">✦</span> Finanzas generales y panel del Santuario</li>
+          <li><span class="ck">✦</span> Distribución por nivel y Almas destacadas</li>
+          <li><span class="ck">✦</span> IA organizacional (LUMBRE conectada)</li>
+          <li><span class="ck">✦</span> Roles y gobernanza del Creador</li>
+        </ul>
+        <a class="btn" href="studio.html">Hablar de un Santuario →</a>
+      </div>
+    </div>
+
+    <!-- Comparativa -->
+    <div class="card s12" style="margin-top:22px">
+      <span class="pill gold">Comparativa</span>
+      <table class="compare">
+        <thead><tr><th>Qué incluye</th><th class="c">◆ Alma</th><th class="c">❂ Clan</th><th class="c">🜁 Santuario</th></tr></thead>
+        <tbody>
+          <tr><td>Almas</td><td class="c">1</td><td class="c">2–8</td><td class="c">8+</td></tr>
+          <tr><td>Espacio privado por Alma</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+          <tr><td>Cotizador + PDF</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+          <tr><td>Agenda y clientes compartidos</td><td class="c no">—</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+          <tr><td>Finanzas colectivas</td><td class="c no">—</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+          <tr><td>Múltiples Clanes y departamentos</td><td class="c no">—</td><td class="c no">—</td><td class="c yes">✓</td></tr>
+          <tr><td>IA organizacional (LUMBRE conectada)</td><td class="c no">—</td><td class="c no">—</td><td class="c yes">✓</td></tr>
+          <tr><td>Roles y gobernanza del Creador</td><td class="c no">—</td><td class="c no">—</td><td class="c yes">✓</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" style="font-size:12.5px;margin-top:14px">🔒 Privacidad absoluta: Mi Alma ≠ Mi Clan ≠ Mi Santuario. Nada se comparte automáticamente.</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="card s12" style="text-align:center;padding:46px;margin-top:22px;background:linear-gradient(145deg,rgba(208,170,99,.14),rgba(255,255,255,.72))">
+      <span class="pill gold">The Founding Era</span>
+      <h2 style="font-size:clamp(26px,4.5vw,42px);letter-spacing:-.05em;margin:14px 0 8px">El acceso es por invitación</h2>
+      <p class="muted" style="max-width:580px;margin:0 auto">Estamos sembrando las primeras Almas. Cruza el umbral para conocer ANIMA por dentro o pide tu código de invitación.</p>
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px">
+        <a class="btn" style="padding:16px 26px;font-size:15.5px" href="studio.html">Cruzar el umbral →</a>
+        <a class="btn secondary" style="padding:16px 26px;font-size:15.5px" href="index.html#filosofia">Conocer la filosofía</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <strong>ANIMA TSC — The Soul of Creativity</strong><br>The Founding Era · A Living World for Creators
+      <div style="margin-top:18px;font-size:11.5px;line-height:1.8">
+        <a href="legal.html#privacidad" style="color:var(--muted);margin:0 8px">Privacidad</a>·
+        <a href="legal.html#terminos" style="color:var(--muted);margin:0 8px">Términos</a>·
+        <a href="legal.html#seguridad" style="color:var(--muted);margin:0 8px">Seguridad</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
