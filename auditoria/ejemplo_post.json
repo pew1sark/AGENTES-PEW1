@@ -1,0 +1,40 @@
+{
+  "_instrucciones": "Rellena lo que puedas. Todo campo desconocido déjalo en null: el auditor trabaja con lo que haya y te dirá qué le falta. Ver PROTOCOLO.md.",
+
+  "post": {
+    "url": "https://www.instagram.com/p/DcMG-3SFttD/",
+    "autor": "@cuenta_a_auditar",
+    "fecha": "2026-08-20",
+    "likes": null,
+    "comentarios": null,
+    "guardados": null,
+    "compartidos": null,
+    "alcance": null,
+    "seguidores_autor": null,
+    "likes_primera_hora": null,
+    "horas_desde_publicacion": null
+  },
+
+  "historico": [
+    { "post": "anterior 1", "likes": null, "comentarios": null },
+    { "post": "anterior 2", "likes": null, "comentarios": null },
+    { "post": "anterior 3", "likes": null, "comentarios": null },
+    { "post": "anterior 4", "likes": null, "comentarios": null },
+    { "post": "anterior 5", "likes": null, "comentarios": null }
+  ],
+
+  "cuentas": [
+    {
+      "usuario": "ejemplo_usuario",
+      "foto_perfil": true,
+      "publicaciones": 34,
+      "seguidores": 210,
+      "seguidos": 305,
+      "bio": "texto de la bio",
+      "privada": false,
+      "verificada": false
+    }
+  ],
+
+  "comentarios_texto": []
+}
