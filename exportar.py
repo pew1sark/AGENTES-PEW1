@@ -14,6 +14,7 @@ Tipos disponibles: propuesta | prospecto | produccion | cotizacion | concepto | 
 import sys
 import os
 import re
+import base64
 import subprocess
 import datetime
 
@@ -34,6 +35,7 @@ def md_a_html(texto):
     lineas = texto.split('\n')
     html = []
     en_lista = False
+    en_ol = False
     en_tabla = False
     en_codigo = False
     bloque_codigo = []
@@ -77,6 +79,9 @@ def md_a_html(texto):
             if en_lista:
                 html.append('</ul>')
                 en_lista = False
+            if en_ol:
+                html.append('</ol>')
+                en_ol = False
             html.append('<hr>')
             continue
 
@@ -108,7 +113,19 @@ def md_a_html(texto):
         # Listas numeradas
         if re.match(r'^\s*\d+\.\s+', linea):
             texto_item = re.sub(r'^\s*\d+\.\s+', '', linea)
+            if not en_ol:
+                html.append('<ol>')
+                en_ol = True
             html.append(f'<li>{inline_md(texto_item)}</li>')
+            continue
+        elif en_ol:
+            html.append('</ol>')
+            en_ol = False
+
+        # Imagen sola en su propia línea
+        m_img = re.match(r'^!\[(.*?)\]\((.+?)\)$', linea.strip())
+        if m_img:
+            html.append(f'<figure><img src="{m_img.group(2)}" alt="{m_img.group(1)}"></figure>')
             continue
 
         # Títulos
@@ -129,6 +146,8 @@ def md_a_html(texto):
 
     if en_lista:
         html.append('</ul>')
+    if en_ol:
+        html.append('</ol>')
     if en_tabla:
         html.append('</tbody></table>')
 
@@ -145,9 +164,39 @@ def inline_md(texto):
     texto = re.sub(r'\*(.+?)\*', r'<em>\1</em>', texto)
     # Código inline
     texto = re.sub(r'`(.+?)`', r'<code>\1</code>', texto)
+    # Imágenes (antes que los links, si no el link se come el ![])
+    texto = re.sub(r'!\[(.*?)\]\((.+?)\)', r'<img src="\2" alt="\1">', texto)
     # Links
     texto = re.sub(r'\[(.+?)\]\((.+?)\)', r'<a href="\2">\1</a>', texto)
     return texto
+
+
+MIME_IMAGEN = {
+    '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png',
+    '.gif': 'image/gif', '.webp': 'image/webp', '.svg': 'image/svg+xml',
+}
+
+
+def incrustar_imagenes(html, carpeta_base):
+    """Convierte rutas locales de imagen en data URI.
+
+    Así el HTML exportado es un archivo autocontenido: se puede mover, enviar
+    por correo o imprimir a PDF sin arrastrar la carpeta de imágenes.
+    """
+    def reemplazo(m):
+        ruta = m.group(1)
+        if ruta.startswith(('data:', 'http://', 'https://')):
+            return m.group(0)
+        ruta_abs = ruta if os.path.isabs(ruta) else os.path.join(carpeta_base, ruta)
+        if not os.path.isfile(ruta_abs):
+            print(f"  ⚠ Imagen no encontrada: {ruta}")
+            return m.group(0)
+        mime = MIME_IMAGEN.get(os.path.splitext(ruta_abs)[1].lower(), 'image/jpeg')
+        with open(ruta_abs, 'rb') as f:
+            datos = base64.b64encode(f.read()).decode('ascii')
+        return f'src="data:{mime};base64,{datos}"'
+
+    return re.sub(r'src="([^"]+)"', reemplazo, html)
 
 
 def generar_html(titulo, tipo_key, contenido_md, fecha):
@@ -282,6 +331,19 @@ def generar_html(titulo, tipo_key, contenido_md, fecha):
     margin: 2em 0;
   }}
 
+  /* Imágenes */
+  figure {{ margin: 1.6em 0; }}
+  img {{
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+  }}
+  figure img {{
+    width: 100%;
+    border: 1px solid var(--gris-medio);
+  }}
+
   table {{
     width: 100%;
     border-collapse: collapse;
@@ -349,6 +411,8 @@ def generar_html(titulo, tipo_key, contenido_md, fecha):
     .doc-titulo-wrapper {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
     pre {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
     th {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+    figure, img, table {{ break-inside: avoid; page-break-inside: avoid; }}
+    h1, h2, h3 {{ break-after: avoid; page-break-after: avoid; }}
     body {{ font-size: 10pt; }}
     @page {{ margin: 0; }}
   }}
@@ -418,18 +482,27 @@ def main():
     nombre_limpio = re.sub(r'[^\w\s-]', '', titulo.lower())
     nombre_limpio = re.sub(r'[\s]+', '-', nombre_limpio.strip())
     fecha_archivo = datetime.datetime.now().strftime("%Y%m%d")
+    # Las imágenes del markdown se resuelven relativas al .md
+    carpeta_base = os.path.dirname(os.path.abspath(archivo_md)) if archivo_md else os.getcwd()
+
     carpeta_salida = "/Users/usuario/Desktop/iSark/Documentos"
+    if not os.path.isdir(carpeta_salida):
+        carpeta_salida = carpeta_base
     archivo_html = os.path.join(carpeta_salida, f"{fecha_archivo}_{nombre_limpio}.html")
 
     html = generar_html(titulo, tipo.lower(), contenido, fecha)
+    html = incrustar_imagenes(html, carpeta_base)
 
     with open(archivo_html, 'w', encoding='utf-8') as f:
         f.write(html)
 
     print(f"✓ Documento generado: {archivo_html}")
-    print(f"  Abriendo en Safari — presiona el botón 'Guardar como PDF' o Cmd+P")
 
-    subprocess.run(['open', '-a', 'Safari', archivo_html])
+    if sys.platform == 'darwin':
+        print(f"  Abriendo en Safari — presiona el botón 'Guardar como PDF' o Cmd+P")
+        subprocess.run(['open', '-a', 'Safari', archivo_html])
+    else:
+        print(f"  Ábrelo en el navegador y usa 'Guardar como PDF'")
 
 
 if __name__ == '__main__':
